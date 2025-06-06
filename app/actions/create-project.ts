@@ -25,11 +25,12 @@ export async function createProject(formData: FormData) {
 
   try {
     await db
-      .collection("projects")
+      .collection("profiles")
       .doc(profileId)
       .collection("projects")
       .doc(generatedId)
       .set({
+        id: generatedId,
         userId: session.user?.id,
         projectName,
         projectDescription,
@@ -37,6 +38,7 @@ export async function createProject(formData: FormData) {
         imagePath,
         createdAt: Timestamp.now().toMillis(),
       });
+      console.log("Project created successfully");
       return true;
   } catch (error) {
     console.error(error);

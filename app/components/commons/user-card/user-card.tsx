@@ -7,26 +7,29 @@ import AddCustomLink from "./add-custom-link";
 import { formatUrl } from "@/app/lib/utils";
 import EditUserCard from "./edit-user-card";
 import { getDownloadURLFromPath } from "@/app/lib/firebase";
+import { Plus } from "lucide-react";
 
 export default async function UserCard({
   profileData,
   isOwner,
 }: {
   profileData?: ProfileData;
-  isOwner: boolean;
+  isOwner?: boolean;
 }) {
+
+  const icons = [FaGithub, FaInstagram, FaFacebook, FaLinkedin, FaSquareXTwitter, Plus];
 
   return (
     <div className="w-[348px] flex flex-col gap-5 items-center p-5 border border-white border-opacity-10 bg-[#121212] rounded-3xl text-white">
       <div className="size-48">
-        <img src={await getDownloadURLFromPath(profileData?.imagePath) || "Escolha sua melhor foto"} alt="Profile picture" className="rounded-full object-cover w-full h-full" />
+        <img src={await getDownloadURLFromPath(profileData?.imagePath) || "/foto-perfil.png"} alt="Profile image" className="rounded-full object-cover w-full h-full" />
       </div>
       <div className="flex flex-col gap-2 w-full">
         <div className="flex items-center justify-between">
-          <h3 className="text-3xl font-bold min-w-0 overflow-hidden">{profileData?.name || "Primeiro e último sobrenome"}</h3>
-          { isOwner && <EditUserCard profileData={profileData} />}
+          <h3 className="text-3xl font-bold min-w-0 overflow-hidden">{profileData?.name || "Rafael Moreira"}</h3>
+          {isOwner && <EditUserCard profileData={profileData} />}
         </div>
-        <p className="opacity-40">{profileData?.description || "Agradecer a Deus sempre."}</p>
+        <p className="opacity-40">{profileData?.description || "Desenvolvedor Front-end 🚀"}</p>
       </div>
       <div className="flex flex-col gap-2 w-full">
         <span className="uppercase text-xs font-medium">Links</span>
@@ -34,38 +37,49 @@ export default async function UserCard({
           {
             profileData?.socialMedias?.github && (
               <Link href={profileData?.socialMedias?.github} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-[#1E1E1E] hover:bg-[#2E2E2E]">
-                <FaGithub className="w-6 h-6" />
+                <FaGithub />
               </Link>
             )
           }
           {
             profileData?.socialMedias?.linkedin && (
               <Link href={profileData?.socialMedias?.linkedin} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-[#1E1E1E] hover:bg-[#2E2E2E]">
-                <FaLinkedin className="w-6 h-6" />
+                <FaLinkedin />
               </Link>
             )
           }
           {
             profileData?.socialMedias?.instagram && (
               <Link href={profileData?.socialMedias?.instagram} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-[#1E1E1E] hover:bg-[#2E2E2E]">
-                <FaInstagram className="w-6 h-6" />
+                <FaInstagram />
               </Link>
             )
           }
           {
             profileData?.socialMedias?.twitter && (
               <Link href={profileData?.socialMedias?.twitter} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-[#1E1E1E] hover:bg-[#2E2E2E]">
-                <FaSquareXTwitter className="w-6 h-6" />
+                <FaSquareXTwitter />
               </Link>
             )
           }
           {
             profileData?.socialMedias?.facebook && (
               <Link href={profileData?.socialMedias?.facebook} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-[#1E1E1E] hover:bg-[#2E2E2E]">
-                <FaFacebook className="w-6 h-6" />
+                <FaFacebook />
               </Link>
             )
           }
+
+          {!profileData &&
+            icons.map((Icon, index) => (
+              <button
+                key={index}
+                className="p-3 rounded-xl bg-[#1E1E1E] hover:bg-[#2E2E2E]"
+              >
+                <Icon />
+              </button>
+            ))}
+
           {isOwner && <EditSocialLinks socialMedias={profileData?.socialMedias} />}
         </div>
       </div>
@@ -86,6 +100,13 @@ export default async function UserCard({
               <Button className="w-full">{profileData?.link3.title}</Button>
             </Link>
           )}
+
+          {!profileData && (
+            <button className="p-3 rounded-xl bg-[#1E1E1E] hover:bg-[#2E2E2E]">
+              <Plus />
+            </button>
+          )}
+
           {isOwner && <AddCustomLink />}
         </div>
       </div>
